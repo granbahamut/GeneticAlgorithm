@@ -3,6 +3,8 @@
  */
 package co.com.ivancho.objects;
 
+import java.util.Random;
+
 import co.com.ivancho.exceptions.CustomException;
 
 /**
@@ -74,6 +76,18 @@ public class Population {
 		}
 		leastFittest = individuals[minFittestIndex];
 		return leastFittest;
+	}
+	
+
+	public void crossover() {
+		Random rn = new Random();
+		int crossoverPoint = rn.nextInt(Constants.getChromosomeSize());
+		
+		for (int i = 0; i < crossoverPoint; i++) {
+			int tempGene = mostFittest.getGenes()[i];
+			mostFittest.getGenes()[i] = secondMostFittest.getGenes()[i];
+			secondMostFittest.getGenes()[i] = tempGene;
+		}
 	}
 	
 	public Chromosome[] getIndividuals() {
