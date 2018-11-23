@@ -16,9 +16,10 @@ public class Population {
 	
 	private Chromosome[] individuals;
 	private int generation = 1;
-	public Chromosome mostFittest;
-	public Chromosome secondMostFittest;
-	public Chromosome leastFittest;
+	private int mostFittest;
+	private int secondMostFittest;
+	private int leastFittest;
+	private Random rand = new Random();
 	/**
 	 * Constructor to create a custom population
 	 */
@@ -34,7 +35,13 @@ public class Population {
 		}
 	}
 	
-	public Chromosome getFittestIndividual() {
+	public void selection() {
+		getFittestIndividual();
+		getSecondFittestIndividual();
+		getLeastFittestIndividual();
+	}
+	
+	public int getFittestIndividual() {
 		double maxFit = Integer.MIN_VALUE;
 		int maxFittestIndex = 0;
 		
@@ -44,11 +51,11 @@ public class Population {
 				maxFittestIndex = i;
 			}
 		}
-		mostFittest = individuals[maxFittestIndex];
+		mostFittest = maxFittestIndex;
 		return mostFittest;
 	}
 	
-	public Chromosome getSecondFittestIndividual() {
+	public int getSecondFittestIndividual() {
 		int maxFitIndex1 = 0;
 		int maxFitIndex2 = 0;
 		
@@ -60,11 +67,11 @@ public class Population {
 				maxFitIndex2 = i;
 			}
 		}
-		secondMostFittest = individuals[maxFitIndex2];
-		return individuals[maxFitIndex2];
+		secondMostFittest = maxFitIndex2;
+		return maxFitIndex2;
 	}
 	
-	public Chromosome getLeastFittestIndividual() {
+	public int getLeastFittestIndividual() {
 		double minFit = Integer.MAX_VALUE;
 		int minFittestIndex = 0;
 		
@@ -74,19 +81,19 @@ public class Population {
 				minFittestIndex = i;
 			}
 		}
-		leastFittest = individuals[minFittestIndex];
+		leastFittest = minFittestIndex;
 		return leastFittest;
 	}
 	
 
 	public void crossover() {
-		Random rn = new Random();
-		int crossoverPoint = rn.nextInt(Constants.getChromosomeSize());
+		
+		int crossoverPoint = rand.nextInt(Constants.getChromosomeSize());
 		
 		for (int i = 0; i < crossoverPoint; i++) {
-			int tempGene = mostFittest.getGenes()[i];
-			mostFittest.getGenes()[i] = secondMostFittest.getGenes()[i];
-			secondMostFittest.getGenes()[i] = tempGene;
+			int tempGene = individuals[mostFittest].getGenes()[i];
+			individuals[mostFittest].getGenes()[i] = individuals[secondMostFittest].getGenes()[i];
+			individuals[secondMostFittest].getGenes()[i] = tempGene;
 		}
 	}
 	
@@ -110,6 +117,48 @@ public class Population {
 	 */
 	public void setGeneration(int generation) {
 		this.generation = generation;
+	}
+
+	/**
+	 * @return the mostFittest
+	 */
+	public int getMostFittest() {
+		return mostFittest;
+	}
+
+	/**
+	 * @param mostFittest the mostFittest to set
+	 */
+	public void setMostFittest(int mostFittest) {
+		this.mostFittest = mostFittest;
+	}
+
+	/**
+	 * @return the secondMostFittest
+	 */
+	public int getSecondMostFittest() {
+		return secondMostFittest;
+	}
+
+	/**
+	 * @param secondMostFittest the secondMostFittest to set
+	 */
+	public void setSecondMostFittest(int secondMostFittest) {
+		this.secondMostFittest = secondMostFittest;
+	}
+
+	/**
+	 * @return the leastFittest
+	 */
+	public int getLeastFittest() {
+		return leastFittest;
+	}
+
+	/**
+	 * @param leastFittest the leastFittest to set
+	 */
+	public void setLeastFittest(int leastFittest) {
+		this.leastFittest = leastFittest;
 	}
 
 }

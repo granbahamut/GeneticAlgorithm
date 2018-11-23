@@ -21,6 +21,7 @@ public class Constants {
 	private static int populationSize;
 	private static int chromosomeSize;
 	private static Chromosome targetChromosome;
+	private static double mutationRate;
 
 	// Error messages:
 	public static final String CHROMOSOME_SIZE_NOT_EQUAL = "Los cromosomas deben ser de igual tamaño.";
@@ -65,6 +66,26 @@ public class Constants {
 			throw new CustomException(CHROMOSOME_SIZE_NOT_EQUAL);
 		}
 		Constants.targetChromosome = targetChromosome;
+	}
+
+	/**
+	 * @return the mutationRate
+	 */
+	public static double getMutationRate() {
+		return mutationRate;
+	}
+
+	/**
+	 * @param mutationRate the mutationRate to set
+	 */
+	public static void setMutationRate(double mutationRate) {
+		if(mutationRate > 1) {
+			mutationRate = 1;
+		} else if (mutationRate < 0) {
+			//No hay mutación
+			mutationRate = 0;
+		}
+		Constants.mutationRate = mutationRate;
 	}
 
 }

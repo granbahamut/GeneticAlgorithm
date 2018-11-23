@@ -19,11 +19,14 @@ public class RunProgram {
 	}
 	
 	public static void main(String[] args) {
-		
+		logger.log(Level.INFO, "**********************************************Setup Phase**********************************************");
 		Constants.setChromosomeSize(6);
 		Constants.setPopulationSize(20);
 		Constants.setTargetChromosome(new Chromosome(new int[] {32, 32, 32, 32, 32, 32}));
+		Constants.setMutationRate(0.5);
 		Population p = new Population();
+		
+		logger.log(Level.INFO, String.format("The values will be: \nChromosome size: %d \nPopulation size: %d \nTarget: %s \nMutation rate: %4$,.2f \n", Constants.getChromosomeSize(), Constants.getPopulationSize(), Constants.getTargetChromosome().getGenes().toString(), Constants.getMutationRate()));
 		
 		for (int i = 0; i < p.getIndividuals().length; i++) {
 			String a = String.format("Chromosome %d : %s",i , StringUtils.printChromosome(p.getIndividuals()[i]));
@@ -32,18 +35,31 @@ public class RunProgram {
 			String c = a + " /\t " + b;
 			logger.log(Level.INFO, c);
 		}
+		logger.log(Level.INFO, "**********************************************Selection Phase**********************************************");
+		p.selection();
 		
-		p.getFittestIndividual();
-		p.getSecondFittestIndividual();
-		p.getLeastFittestIndividual();
-		
-		String a = String.format("Most fit chromosome: %s", StringUtils.printChromosome(p.mostFittest));
+		String a = String.format("Most fit chromosome: %s", StringUtils.printChromosome(p.getIndividuals()[p.getMostFittest()]));
 		logger.log(Level.INFO, a);
 		
-		a = String.format("Second most fit chromosome: %s", StringUtils.printChromosome(p.secondMostFittest));
+		a = String.format("Second most fit chromosome: %s", StringUtils.printChromosome(p.getIndividuals()[p.getSecondMostFittest()]));
 		logger.log(Level.INFO, a);
 		
-		a = String.format("Least fit chromosome: %s", StringUtils.printChromosome(p.leastFittest));
+		a = String.format("Least fit chromosome: %s", StringUtils.printChromosome(p.getIndividuals()[p.getLeastFittest()]));
 		logger.log(Level.INFO, a);
+		logger.log(Level.INFO, "**********************************************Crossover Phase**********************************************");
+		p.crossover();
+		
+		a = String.format("Most fit chromosome crossed: %s", StringUtils.printChromosome(p.getIndividuals()[p.getMostFittest()]));
+		logger.log(Level.INFO, a);
+		
+		a = String.format("Second most fit chromosome crossed: %s", StringUtils.printChromosome(p.getIndividuals()[p.getSecondMostFittest()]));
+		logger.log(Level.INFO, a);
+		
+		logger.log(Level.INFO, "**********************************************Mutation Phase**********************************************");
+		p.getIndividuals()[p.getMostFittest()].mutate();
+		
+		a = String.format("Most fit chromosome was mutated: %s", StringUtils.printChromosome(p.getIndividuals()[p.getMostFittest()]));
+		logger.log(Level.INFO, a);
+		
 	}
 }

@@ -19,4 +19,13 @@ public class NumberUtils {
 
 		return new Random().nextInt((max - min) + 1) + min;
 	}
+	
+	public static double getRandomNumberInRange(double min, double max) {
+
+		if (min >= max) {
+			throw new CustomException("max must be greater than min");
+		}
+
+		return min + new Random().nextDouble() * (max - min);
+	}
 }

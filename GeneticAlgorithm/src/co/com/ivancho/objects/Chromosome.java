@@ -29,7 +29,7 @@ public class Chromosome {
 	 * Indicates the average fitness acording to the goal of the program.
 	 */
 	private double fitness = 0;
-
+	
 	/**
 	 * Constructor that uses the <code>size</code> parameter to set the amount of
 	 * genes the chromosome will contain.
@@ -115,5 +115,39 @@ public class Chromosome {
 			tempFitness += (double) genes[i] / Constants.geneRange.GENE_MAX_VALUE.getValue();
 		}
 		fitness = tempFitness / genes.length;
+	}
+	
+	/**
+	 * <p>
+	 * Mutates a single gene of the chromosome, giving a customized value to it, calculated with the mutation rate:</br>
+	 * <code>+/- R = M * P</code></br>
+	 * where P = the mutation rate wich range is from 0 to 1, being 0 = no mutation and 1 = full random mutation;
+	 * M = Max value a gene can take (see Constants.geneRange.GENE_MAX_VALUE).
+	 * </p>
+	 * <p>
+	 * The value returned by this formula gives us a range wich will be used to add or substract to the gene that will be mutated, for example:</br>
+	 * Given M = 32; P = 0.5; then R = +/- 16</br>
+	 * R will be added/substracted to the value of the gene that will be selected to be mutated so, 
+	 * if we have a gene with the values: [10, 13, 31, 1, 12, 23] and the algorithm chooses the 3rd 
+	 * position to be mutated, the result will be [10, 13, <b>31+16</b>, 1, 12, 23] = [10, 13, <b>47</b>, 1, 12, 23]. But the max value for a gene 
+	 * is M = 32, so the final value will be [10, 13, <b>32</b>, 1, 12, 23]
+	 * </p>
+	 * */
+	public void mutate() {
+		double range = Math.floor(Constants.geneRange.GENE_MAX_VALUE.getValue() * Constants.getMutationRate());
+		int m = 0;
+		if(range != 0) {
+			m = (int) Math.floor(NumberUtils.getRandomNumberInRange(-range, range));
+		}
+		int g = this.genes[new Random().nextInt(this.genes.length)];
+		g = g + m;
+		//Rounds to 1 if its less than 1
+		if(g < 1) {
+			g = 1;
+		//Rounds to GENE_MAX_VALUE if its greater than GENE_MAX_VALUE 
+		} else if(g > Constants.geneRange.GENE_MAX_VALUE.getValue()) {
+			g = Constants.geneRange.GENE_MAX_VALUE.getValue();
+		}
+		this.genes[new Random().nextInt(this.genes.length)] = g;
 	}
 }
